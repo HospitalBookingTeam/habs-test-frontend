@@ -10,3 +10,17 @@ export const formatCurrency = (amount: number | string) => {
 		currency: 'VND',
 	}).format(Number(amount))
 }
+
+export function readFileAsync(file: any): Promise<any> {
+	return new Promise((resolve, reject) => {
+		let reader = new FileReader()
+
+		reader.onload = () => {
+			resolve(reader.result)
+		}
+
+		reader.onerror = reject
+
+		reader.readAsBinaryString(file)
+	})
+}

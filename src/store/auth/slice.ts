@@ -21,11 +21,8 @@ export const authSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
-			.addMatcher(authApi.endpoints.login.matchPending, (state, action) => {
-				console.log('pending', action)
-			})
+			.addMatcher(authApi.endpoints.login.matchPending, (state, action) => {})
 			.addMatcher(authApi.endpoints.login.matchFulfilled, (state, action) => {
-				console.log('fulfilled', action)
 				state.information = action.payload.information
 				state.token = action.payload.token
 				state.isAuthenticated = true

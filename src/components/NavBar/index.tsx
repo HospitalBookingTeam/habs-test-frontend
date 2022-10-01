@@ -103,9 +103,9 @@ const useStyles = createStyles((theme, _params, getRef) => {
 })
 
 const data = [
-	{ link: '/', label: 'Hàng chờ khám', icon: IconList },
-	{ link: '/testing', label: 'Đợi kết quả', icon: IconPackage },
-	{ link: '/finished', label: 'Người bệnh đã khám', icon: IconZoomCheck },
+	{ link: '/', label: 'Chờ xét nghiệm', icon: IconList },
+	{ link: '/waiting', label: 'Chờ kết quả xét nghiệm', icon: IconList },
+	{ link: '/finished', label: 'Đã xét nghiệm', icon: IconPackage },
 ]
 
 export function NavbarSimpleColored({ opened }: { opened: boolean }) {
@@ -135,7 +135,6 @@ export function NavbarSimpleColored({ opened }: { opened: boolean }) {
 	))
 
 	useEffect(() => {
-		console.log('authData', authData)
 		if (!authData?.isAuthenticated) {
 			navigate('/login')
 		}
@@ -151,11 +150,13 @@ export function NavbarSimpleColored({ opened }: { opened: boolean }) {
 		>
 			<Navbar.Section grow>
 				<Text weight={500} size="sm" className={classes.title} mb="xs">
-					Thông tin
+					Bác sĩ {authData?.information?.name}
 				</Text>
 				<Stack className={classes.header}>
-					{/* <MantineLogo size={28} inverted /> */}
-					<Code className={classes.version}>Thông tin phụ</Code>
+					<Code className={classes.version}>
+						Phòng {authData?.information?.room?.roomNumber} -{' '}
+						{authData?.information?.room?.roomTypeName}{' '}
+					</Code>
 				</Stack>
 				{links}
 			</Navbar.Section>

@@ -1,6 +1,6 @@
 import { AuthForm } from '@/entities/auth'
-import { useLoginMutation } from '@/store/auth/api'
-import { createStyles, Image, Text } from '@mantine/core'
+import { useGetRoomListQuery, useLoginMutation } from '@/store/auth/api'
+import { createStyles, Image, LoadingOverlay, Text } from '@mantine/core'
 import { Stack } from '@mantine/core'
 import {
 	Paper,
@@ -8,7 +8,7 @@ import {
 	PasswordInput,
 	Button,
 	Title,
-	Checkbox,
+	Select,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { openModal } from '@mantine/modals'
@@ -37,13 +37,20 @@ const useStyles = createStyles((theme) => ({
 const Login = () => {
 	const { classes } = useStyles()
 	const [login, { isLoading }] = useLoginMutation()
+	const { data: roomData, isLoading: isLoadingRoomData } = useGetRoomListQuery()
 
+	const roomOptions = roomData?.map((item) => ({
+		...item,
+		value: item.id.toString(),
+		label: `${item.roomTypeName} ${item.roomNumber} - Tầng ${item.floor}`,
+	}))
 	const navigate = useNavigate()
 
 	const form = useForm({
 		initialValues: {
 			username: '',
 			password: '',
+			roomId: '',
 		},
 
 		validate: {
@@ -53,7 +60,7 @@ const Login = () => {
 	})
 
 	const onSubmit = async (values: AuthForm) => {
-		await login({ ...values })
+		await login({ ...values, roomId: Number(values?.roomId) })
 			.unwrap()
 			.then(() => navigate('/'))
 			.catch((error) => {
@@ -77,14 +84,15 @@ const Login = () => {
 			<form onSubmit={form.onSubmit(onSubmit)}>
 				<Stack className={classes.layout}>
 					<Stack justify="center" px={12} className={classes.formHolder}>
+						<LoadingOverlay visible={isLoadingRoomData} overlayBlur={2} />
 						<Title order={2} align="center" mt="md" mb={50}>
-							Chào mừng bạn
+							Chào mừng bạn đến với Bệnh Viện
 						</Title>
 
 						<TextInput
 							withAsterisk={true}
 							label="Username"
-							placeholder="user"
+							placeholder="trany"
 							size="md"
 							{...form.getInputProps('username')}
 						/>
@@ -98,7 +106,18 @@ const Login = () => {
 							{...form.getInputProps('password')}
 						/>
 
-						<Checkbox label="Nhớ tôi nhé" mt="xl" size="md" />
+						<Select
+							withAsterisk={true}
+							mt="md"
+							size="md"
+							label="Phòng xét nghiệm"
+							placeholder="Vui lòng chọn một"
+							data={roomOptions ?? []}
+							searchable={true}
+							nothingFound="Không tìm thấy"
+							{...form.getInputProps('roomId')}
+						/>
+						{/* <Checkbox label="Keep me logged in" mt="xl" size="md" /> */}
 						<Button
 							type="submit"
 							fullWidth={true}

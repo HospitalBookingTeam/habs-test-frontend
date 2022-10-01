@@ -29,7 +29,7 @@ const LayoutAppShell = ({ children }: LayoutAppShellProps) => {
 				},
 			}}
 			navbar={<NavbarSimpleColored opened={!!opened} />}
-			footer={<FooterApp />}
+			// footer={<FooterApp />}
 		>
 			<Box
 				sx={{

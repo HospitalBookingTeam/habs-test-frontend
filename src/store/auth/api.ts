@@ -1,10 +1,11 @@
-import { AuthForm } from '@/entities/auth'
+import { AuthForm, AuthUser } from '@/entities/auth'
+import { Room } from '@/entities/room'
 import { retry } from '@reduxjs/toolkit/query/react'
 import { api } from '../api'
 
 export const authApi = api.injectEndpoints({
 	endpoints: (build) => ({
-		login: build.mutation<{ token: string }, any>({
+		login: build.mutation<{ token: string; information: AuthUser }, any>({
 			query: (credentials: AuthForm) => ({
 				url: 'login',
 				method: 'POST',
@@ -17,11 +18,20 @@ export const authApi = api.injectEndpoints({
 				},
 			},
 		}),
+		getRoomList: build.query<Room[], void>({
+			query: () => ({
+				url: `rooms/exam-room`,
+			}),
+			providesTags: (result = []) => [
+				...result.map(({ id }) => ({ type: 'Auth', id } as const)),
+				{ type: 'Auth' as const, id: 'ROOMS' },
+			],
+		}),
 	}),
 })
 
-export const { useLoginMutation } = authApi
+export const { useLoginMutation, useGetRoomListQuery } = authApi
 
 export const {
-	endpoints: { login },
+	endpoints: { login, getRoomList },
 } = authApi

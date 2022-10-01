@@ -4,9 +4,14 @@ import { Container, LoadingOverlay } from '@mantine/core'
 import { selectIsAuthenticated } from '@/store/auth/selectors'
 import { useAppSelector } from '@/store/hooks'
 import LayoutAppShell from '@/components/Layout'
-import SimpleVerticalLayout from '@/components/Layout/SimpleVerticalLayout'
 
 const Login = lazy(() => import('@/pages/auth'))
+const Queue = lazy(() => import('@/pages/queue'))
+const QueueDetail = lazy(() => import('@/pages/queue/detail'))
+const FinishedQueue = lazy(() => import('@/pages/queue/FinishQueue'))
+const WaitingForResultQueue = lazy(
+	() => import('@/pages/queue/WaitingForResultQueue')
+)
 
 const NotFound = lazy(() => import('@/components/NotFound/NotFoundPage'))
 
@@ -20,7 +25,14 @@ function App() {
 				<Routes>
 					<Route path="/" element={<Outlet />}>
 						<Route element={<RequireAuth />}>
-							<Route index element={<>Hello</>} />
+							<Route index element={<Queue />} />
+							<Route path=":id" element={<QueueDetail />} />
+							<Route path="finished" element={<Outlet />}>
+								<Route index element={<FinishedQueue />} />
+							</Route>
+							<Route path="waiting" element={<Outlet />}>
+								<Route index element={<WaitingForResultQueue />} />
+							</Route>
 						</Route>
 
 						<Route path="/login" element={<IsUserRedirect />}>
@@ -44,9 +56,9 @@ const RequireAuth = () => {
 	}, [isAuthenticated, navigate])
 
 	return isAuthenticated ? (
-		<SimpleVerticalLayout>
+		<LayoutAppShell>
 			<Outlet />
-		</SimpleVerticalLayout>
+		</LayoutAppShell>
 	) : (
 		<Navigate to={'/login'} />
 	)
