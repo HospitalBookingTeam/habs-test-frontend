@@ -23,7 +23,7 @@ interface QueueTableProps {
 	isLoading?: boolean
 }
 
-const ProgressQueueTable = ({ data, isLoading }: QueueTableProps) => {
+const FinishQueueTable = ({ data, isLoading }: QueueTableProps) => {
 	const theme = useMantineTheme()
 	const navigate = useNavigate()
 
@@ -58,7 +58,7 @@ const ProgressQueueTable = ({ data, isLoading }: QueueTableProps) => {
 					<Group spacing={'sm'} position="right">
 						<Button
 							sx={{ width: 200 }}
-							onClick={() => navigate(`/records/${item.id}`)}
+							onClick={() => navigate(`/finished/${item.id}`)}
 						>
 							Xem kết quả khám bệnh
 						</Button>
@@ -96,4 +96,4 @@ const ProgressQueueTable = ({ data, isLoading }: QueueTableProps) => {
 	)
 }
 
-export default ProgressQueueTable
+export default FinishQueueTable

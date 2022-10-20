@@ -1,4 +1,4 @@
-import { QueueTable } from '@/components/Table'
+import { WaitingForResultTable } from '@/components/Table'
 import { TestRecord } from '@/entities/record'
 import { selectAuth } from '@/store/auth/selectors'
 import { useAppSelector } from '@/store/hooks'
@@ -10,7 +10,7 @@ import { IconSearch } from '@tabler/icons'
 import Fuse from 'fuse.js'
 import { useEffect, useState } from 'react'
 
-const Queue = () => {
+const WaitingForResultQueue = () => {
 	const authData = useAppSelector(selectAuth)
 
 	const [queueData, setQueueData] = useState<TestRecord[] | undefined>(
@@ -46,7 +46,7 @@ const Queue = () => {
 				mb="sm"
 			>
 				<Title order={1} size="h3">
-					Hàng chờ xét nghiệm
+					Danh sách chờ kết quả
 				</Title>
 				<TextInput
 					placeholder="Tìm kiếm người bệnh"
@@ -58,9 +58,9 @@ const Queue = () => {
 				/>
 			</Stack>
 			<Paper p="md">
-				<QueueTable data={queueData} isLoading={isLoading} />
+				<WaitingForResultTable data={queueData} isLoading={isLoading} />
 			</Paper>
 		</Stack>
 	)
 }
-export default Queue
+export default WaitingForResultQueue
