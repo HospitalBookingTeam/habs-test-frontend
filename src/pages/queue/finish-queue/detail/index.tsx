@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 
 import { useGetQueueByIdQuery } from '@/store/queue/api'
 import PatientInfo from '../../components/record/PatientInfo'
+import TestRecordItem from '@/components/Record/TestRecordItem'
 
 const FinishQueueDetail = () => {
 	const { id } = useParams()
@@ -22,7 +23,7 @@ const FinishQueueDetail = () => {
 				mb="sm"
 				spacing={40}
 			>
-				<BackButton />
+				<BackButton route="/finished" />
 
 				<Badge size="xl" radius="md">
 					Kết quả xét nghiệm
@@ -39,6 +40,7 @@ const FinishQueueDetail = () => {
 						<Divider />
 						<PatientInfo />
 						<Divider />
+						<TestRecordItem data={data} />
 					</Stack>
 				</Paper>
 			</Box>
