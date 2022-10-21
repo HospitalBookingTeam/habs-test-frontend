@@ -21,7 +21,7 @@ export interface TestRecord {
 
 	resultFileLink?: string
 	resultDescription?: string
-	doctorName?: string
+	doctor?: string
 	roomNumber?: number
 	floor?: string
 }
