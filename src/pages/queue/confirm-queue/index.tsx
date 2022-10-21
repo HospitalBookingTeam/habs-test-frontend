@@ -1,16 +1,16 @@
-import ProgressQueueTable from '@/components/Table/ProgressQueueTable'
+import { QueueTable } from '@/components/Table'
 import { TestRecord } from '@/entities/record'
 import { selectAuth } from '@/store/auth/selectors'
 import { useAppSelector } from '@/store/hooks'
-import { useGetFinishedQueueQuery } from '@/store/queue/api'
+import { useGetQueueQuery } from '@/store/queue/api'
 import { SEARCH_OPTIONS } from '@/utils/constants'
-import { Stack, Title, Grid, TextInput, Paper, Loader } from '@mantine/core'
+import { Stack, Title, TextInput, Paper } from '@mantine/core'
 import { useDebouncedState } from '@mantine/hooks'
 import { IconSearch } from '@tabler/icons'
 import Fuse from 'fuse.js'
 import { useEffect, useState } from 'react'
 
-const FinishQueue = () => {
+const Queue = () => {
 	const authData = useAppSelector(selectAuth)
 
 	const [queueData, setQueueData] = useState<TestRecord[] | undefined>(
@@ -18,10 +18,11 @@ const FinishQueue = () => {
 	)
 	const [value, setValue] = useDebouncedState('', 200)
 
-	const { data, isLoading } = useGetFinishedQueueQuery(
-		authData?.information?.room?.id as number,
+	const { data, isLoading } = useGetQueueQuery(
+		{ roomId: authData?.information?.room?.id },
 		{
 			refetchOnFocus: true,
+			refetchOnMountOrArgChange: true,
 			skip: !authData?.information,
 		}
 	)
@@ -46,7 +47,7 @@ const FinishQueue = () => {
 				mb="sm"
 			>
 				<Title order={1} size="h3">
-					Danh sách người bệnh đã khám
+					Danh sách xét nghiệm
 				</Title>
 				<TextInput
 					placeholder="Tìm kiếm người bệnh"
@@ -58,9 +59,9 @@ const FinishQueue = () => {
 				/>
 			</Stack>
 			<Paper p="md">
-				<ProgressQueueTable data={queueData} isLoading={isLoading} />
+				<QueueTable data={queueData} isLoading={isLoading} />
 			</Paper>
 		</Stack>
 	)
 }
-export default FinishQueue
+export default Queue

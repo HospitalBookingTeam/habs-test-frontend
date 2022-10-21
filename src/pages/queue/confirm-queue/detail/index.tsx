@@ -1,12 +1,12 @@
 import BackButton from '@/components/Button/BackButton'
 import { Badge } from '@mantine/core'
-import { Button, Paper, Stack, Tabs, Title, Box } from '@mantine/core'
+import { Paper, Stack, Tabs, Box } from '@mantine/core'
 import { IconId, IconStethoscope } from '@tabler/icons'
 import { useState } from 'react'
-import { useParams, useSearchParams } from 'react-router-dom'
-import ExamineTabs from './examine'
+import { useSearchParams } from 'react-router-dom'
+import ExamineTabs from './ExamineTabs'
 
-import PatientRecord from './record'
+import PatientRecord from '../../components/record'
 
 const QueueDetail = () => {
 	const [searchParams, setSearchParams] = useSearchParams()
@@ -89,10 +89,7 @@ const QueueDetail = () => {
 					</Tabs.Panel>
 				</Tabs>
 			</Box>
-			{/* </Paper> */}
 		</Stack>
 	)
 }
 export default QueueDetail
-
-//TODO: Verify whether the doctor can start treatment for this patient. If the patient is not confirmed.

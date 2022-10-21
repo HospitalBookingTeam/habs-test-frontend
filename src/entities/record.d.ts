@@ -18,4 +18,10 @@ export interface TestRecord {
 	operationName: string
 	patientId: number
 	patient: PatientInRecord
+
+	resultFileLink?: string
+	resultDescription?: string
+	doctorName?: string
+	roomNumber?: number
+	floor?: string
 }

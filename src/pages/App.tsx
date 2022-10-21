@@ -6,11 +6,15 @@ import { useAppSelector } from '@/store/hooks'
 import LayoutAppShell from '@/components/Layout'
 
 const Login = lazy(() => import('@/pages/auth'))
-const Queue = lazy(() => import('@/pages/queue'))
-const QueueDetail = lazy(() => import('@/pages/queue/detail'))
-const FinishedQueue = lazy(() => import('@/pages/queue/FinishQueue'))
-const WaitingForResultQueue = lazy(
-	() => import('@/pages/queue/WaitingForResultQueue')
+const Queue = lazy(() => import('@/pages/queue/confirm-queue'))
+const QueueDetail = lazy(() => import('@/pages/queue/confirm-queue/detail'))
+const FinishedQueue = lazy(() => import('@/pages/queue/finish-queue'))
+const FinishedQueueDetail = lazy(
+	() => import('@/pages/queue/finish-queue/detail')
+)
+const WaitingForResultQueue = lazy(() => import('@/pages/queue/waiting-queue'))
+const WaitingForResultQueueDetail = lazy(
+	() => import('@/pages/queue/waiting-queue/detail')
 )
 
 const NotFound = lazy(() => import('@/components/NotFound/NotFoundPage'))
@@ -29,9 +33,11 @@ function App() {
 							<Route path=":id" element={<QueueDetail />} />
 							<Route path="finished" element={<Outlet />}>
 								<Route index element={<FinishedQueue />} />
+								<Route path=":id" element={<FinishedQueueDetail />} />
 							</Route>
 							<Route path="waiting" element={<Outlet />}>
 								<Route index element={<WaitingForResultQueue />} />
+								<Route path=":id" element={<WaitingForResultQueueDetail />} />
 							</Route>
 						</Route>
 
