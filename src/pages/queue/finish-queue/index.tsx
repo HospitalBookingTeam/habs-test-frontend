@@ -22,6 +22,7 @@ const FinishQueue = () => {
 		authData?.information?.room?.id as number,
 		{
 			refetchOnFocus: true,
+			refetchOnMountOrArgChange: true,
 			skip: !authData?.information,
 		}
 	)

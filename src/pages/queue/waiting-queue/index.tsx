@@ -22,6 +22,7 @@ const WaitingForResultQueue = () => {
 		{ roomId: authData?.information?.room?.id, isWaitingForResult: true },
 		{
 			refetchOnFocus: true,
+			refetchOnMountOrArgChange: true,
 			skip: !authData?.information,
 		}
 	)
