@@ -12,6 +12,7 @@ const FinishQueueDetail = () => {
 	const { id } = useParams()
 	const { data } = useGetQueueByIdQuery(Number(id), {
 		skip: !id,
+		refetchOnMountOrArgChange: true,
 	})
 
 	return (
