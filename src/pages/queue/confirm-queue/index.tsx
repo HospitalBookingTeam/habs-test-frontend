@@ -18,7 +18,7 @@ const Queue = () => {
 	)
 	const [value, setValue] = useDebouncedState('', 200)
 
-	const { data, isLoading } = useGetQueueQuery(
+	const { data, isLoading, isSuccess } = useGetQueueQuery(
 		{ roomId: authData?.information?.room?.id },
 		{
 			refetchOnFocus: true,
@@ -28,15 +28,21 @@ const Queue = () => {
 	)
 
 	useEffect(() => {
-		if (!data?.length) return
+		if (!data?.length) {
+			if (isSuccess) {
+				setQueueData(undefined)
+			} else {
+				return
+			}
+		}
 		if (value === '') {
 			setQueueData(data)
 			return
 		}
-		const fuse = new Fuse(data, SEARCH_OPTIONS)
+		const fuse = new Fuse(data as TestRecord[], SEARCH_OPTIONS)
 		const results: TestRecord[] = fuse.search(value).map(({ item }) => item)
 		setQueueData(results)
-	}, [value, data])
+	}, [value, data, isSuccess])
 
 	return (
 		<Stack p="md">

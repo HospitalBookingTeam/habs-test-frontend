@@ -10,4 +10,7 @@ export default defineConfig({
 		alias: [{ find: '@', replacement: '/src' }],
 	},
 	plugins: [react()],
+    server: {
+        port: 3456
+    }
 })
