@@ -1,9 +1,11 @@
-import { lazy, Suspense, useLayoutEffect } from 'react'
+import { lazy, Suspense, useEffect, useLayoutEffect } from 'react'
 import { Routes, Route, Outlet, Navigate, useNavigate } from 'react-router-dom'
 import { Container, LoadingOverlay } from '@mantine/core'
 import { selectIsAuthenticated } from '@/store/auth/selectors'
 import { useAppSelector } from '@/store/hooks'
 import LayoutAppShell from '@/components/Layout'
+import { selectTime } from '@/store/config/selectors'
+import { useLazyGetTimeQuery } from '@/store/config/api'
 
 const Login = lazy(() => import('@/pages/auth'))
 const Queue = lazy(() => import('@/pages/queue/confirm-queue'))
@@ -20,6 +22,18 @@ const WaitingForResultQueueDetail = lazy(
 const NotFound = lazy(() => import('@/components/NotFound/NotFoundPage'))
 
 function App() {
+	const isAuthenticated = useAppSelector(selectIsAuthenticated)
+	const configTime = useAppSelector(selectTime)
+	const [triggerTimeConfig] = useLazyGetTimeQuery()
+	useEffect(() => {
+		const getTime = async () => {
+			await triggerTimeConfig()
+		}
+		if (isAuthenticated && configTime === null) {
+			getTime()
+		}
+	}, [isAuthenticated, configTime])
+
 	return (
 		<Suspense fallback={<LoadingOverlay visible={true} />}>
 			<Container
