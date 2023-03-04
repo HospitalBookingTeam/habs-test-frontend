@@ -10,6 +10,7 @@ import {
 } from '@mantine/core'
 import { NavbarSimpleColored } from '../NavBar'
 import { FooterApp } from './Footer'
+import LayoutHeader from './Header'
 
 type LayoutAppShellProps = {
 	children: ReactNode
@@ -30,6 +31,7 @@ const LayoutAppShell = ({ children }: LayoutAppShellProps) => {
 			}}
 			navbar={<NavbarSimpleColored opened={!!opened} />}
 			// footer={<FooterApp />}
+			header={<LayoutHeader />}
 		>
 			<Box
 				sx={{

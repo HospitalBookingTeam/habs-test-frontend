@@ -1,7 +1,13 @@
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+dayjs.extend(utc)
 
 export const formatDate = (date: string, format = 'DD/MM/YYYY') => {
 	return dayjs(date).format(format)
+}
+
+export const getLocalTimeFromUTC = (date: number | string) => {
+	return dayjs(date).utc().local().valueOf()
 }
 
 export const formatCurrency = (amount: number | string) => {
