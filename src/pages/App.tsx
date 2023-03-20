@@ -41,23 +41,22 @@ function App() {
 				sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
 			>
 				<Routes>
-					<Route path="/" element={<Outlet />}>
-						<Route element={<RequireAuth />}>
+					<Route element={<RequireAuth />}>
+						<Route path="/" element={<Outlet />}>
 							<Route index element={<Queue />} />
 							<Route path=":id" element={<QueueDetail />} />
-							<Route path="finished" element={<Outlet />}>
-								<Route index element={<FinishedQueue />} />
-								<Route path=":id" element={<FinishedQueueDetail />} />
-							</Route>
-							<Route path="waiting" element={<Outlet />}>
-								<Route index element={<WaitingForResultQueue />} />
-								<Route path=":id" element={<WaitingForResultQueueDetail />} />
-							</Route>
 						</Route>
-
-						<Route path="/login" element={<IsUserRedirect />}>
-							<Route index element={<Login />} />
+						<Route path="/finished" element={<Outlet />}>
+							<Route index element={<FinishedQueue />} />
+							<Route path=":id" element={<FinishedQueueDetail />} />
 						</Route>
+						<Route path="/waiting" element={<Outlet />}>
+							<Route index element={<WaitingForResultQueue />} />
+							<Route path=":id" element={<WaitingForResultQueueDetail />} />
+						</Route>
+					</Route>
+					<Route path="/login" element={<IsUserRedirect />}>
+						<Route index element={<Login />} />
 					</Route>
 					<Route path="*" element={<NotFound />} />
 				</Routes>
