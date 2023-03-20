@@ -118,7 +118,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
 
 const data = [
 	{ link: '', label: 'Hàng chờ xét nghiệm', icon: IconList },
-	{ link: '/testing', label: 'Hàng đợi kết quả', icon: IconPackage },
+	{ link: '/waiting', label: 'Hàng đợi kết quả', icon: IconPackage },
 	{ link: '/finished', label: 'Hàng đã xét nghiệm', icon: IconZoomCheck },
 ]
 
