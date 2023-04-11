@@ -205,7 +205,7 @@ export function NavbarSimpleColored({ opened }: { opened: boolean }) {
 			className={classes.navbar}
 		>
 			<Navbar.Section grow>
-				<Stack align="center">
+				<Stack align={matches ? 'center' : 'start'}>
 					<MediaQuery
 						query={`(min-width: ${theme.breakpoints.lg}px)`}
 						styles={{ display: 'none' }}

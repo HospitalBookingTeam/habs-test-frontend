@@ -53,7 +53,7 @@ const FinishQueue = () => {
 				mb="sm"
 			>
 				<Title order={1} size="h3">
-					Danh sách đã khám
+					Danh sách đã xét nghiệm
 				</Title>
 				<TextInput
 					placeholder="Tìm kiếm người bệnh"

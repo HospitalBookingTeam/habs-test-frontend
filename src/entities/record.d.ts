@@ -24,4 +24,5 @@ export interface TestRecord {
 	doctor?: string
 	roomNumber?: number
 	floor?: string
+	failReason?: string
 }
