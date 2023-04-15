@@ -25,4 +25,5 @@ export interface TestRecord {
 	roomNumber?: number
 	floor?: string
 	failReason?: string
+	code?: string
 }

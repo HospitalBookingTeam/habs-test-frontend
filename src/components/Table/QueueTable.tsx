@@ -115,7 +115,7 @@ const QueueTable = ({ data, isLoading }: QueueTableProps) => {
 				<Grid.Col span={2}>
 					<Stack align={'end'}>
 						<Button
-							variant={isInProgress ? 'gradient' : 'filled'}
+							variant={isInProgress ? 'outline' : 'filled'}
 							rightIcon={isInProgress ? <IconChevronRight /> : null}
 							color="green"
 							gradient={{ from: 'teal', to: 'lime', deg: 105 }}

@@ -21,6 +21,7 @@ import { IconReportMedical } from '@tabler/icons'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import BasicCheckup from '../../components/BasicCheckup'
+import { formatDate } from '@/utils/formats'
 
 const ExamineTabs = () => {
 	const [isResultDone, setIsResultDone] = useState(false)
@@ -98,8 +99,32 @@ const ExamineTabs = () => {
 
 			<Tabs.Panel value="gallery" pt="xs" sx={{ position: 'relative' }}>
 				<LoadingOverlay visible={isLoading && !isResultDone} />
-				<Stack>
-					<Group mt="sm" position="apart">
+				<Stack pt="sm">
+					<Stack spacing={0}>
+						<Group>
+							<Text weight={'bolder'} size="sm" sx={{ minWidth: 80 }}>
+								Mã số
+							</Text>
+							<Text>{data?.code ?? '---'}</Text>
+						</Group>
+						<Group>
+							<Text weight={'bolder'} size="sm" sx={{ minWidth: 80 }}>
+								Họ tên
+							</Text>
+							<Text>{data?.patientName ?? '---'}</Text>
+						</Group>
+						<Group>
+							<Text weight={'bolder'} size="sm" sx={{ minWidth: 80 }}>
+								Ngày sinh
+							</Text>
+							<Text>
+								{data?.patient?.dateOfBirth
+									? formatDate(data?.patient?.dateOfBirth)
+									: '---'}
+							</Text>
+						</Group>
+					</Stack>
+					<Group position="apart">
 						<Title order={3} size="h4">
 							{data?.operationName ?? '---'}
 						</Title>

@@ -36,6 +36,7 @@ const TestRecordItem = ({
 					Xem chi tiết
 				</Button>
 			</Group>
+			<RowWithLabel label="Mã số" content={data?.code ?? '---'} />
 			<RowWithLabel label="Bác sĩ xét nghiệm" content={data?.doctor} />
 
 			<RowWithLabel
