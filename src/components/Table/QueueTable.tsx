@@ -130,11 +130,14 @@ const QueueTable = ({ data, isLoading }: QueueTableProps) => {
 			confirmProps: {
 				color: 'red',
 			},
-			onConfirm: () => handleConfirmRemoveQueue(queueId),
+			onConfirm: () => handleConfirmRemoveQueue(patientName, queueId),
 		})
 	}
 
-	const handleConfirmRemoveQueue = async (queueId: number) => {
+	const handleConfirmRemoveQueue = async (
+		patientName: string,
+		queueId: number
+	) => {
 		if (!authData?.information) return
 		await removeFromQueueMutation({
 			id: queueId,
@@ -143,8 +146,9 @@ const QueueTable = ({ data, isLoading }: QueueTableProps) => {
 			.unwrap()
 			.then((payload) =>
 				showNotification({
-					title: 'Đã xóa khỏi hàng chờ',
+					title: `Đã xóa ${patientName} khỏi hàng chờ`,
 					message: '',
+					color: 'cyan',
 				})
 			)
 			.catch((error) =>
@@ -255,7 +259,7 @@ const QueueTable = ({ data, isLoading }: QueueTableProps) => {
 					<Loader size="lg" />
 				</Center>
 				<Stack sx={{ width: '100%' }} mt="sm">
-					<LoadingOverlay visible={isLoadingConfirm} />
+					<LoadingOverlay visible={isLoadingConfirm || isLoadingRemove} />
 					{rows}
 				</Stack>
 			</ScrollArea>
