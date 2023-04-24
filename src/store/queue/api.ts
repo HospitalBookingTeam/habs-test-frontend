@@ -1,7 +1,11 @@
 import { TestRecord } from '@/entities/record'
-import { api } from '../api'
+import { baseQueryWithRetry } from '../api'
+import { createApi } from '@reduxjs/toolkit/dist/query/react'
 
-export const queueApi = api.injectEndpoints({
+export const queueApi = createApi({
+	reducerPath: 'queueApi',
+	tagTypes: ['Auth', 'Queue'],
+	baseQuery: baseQueryWithRetry,
 	endpoints: (build) => ({
 		getQueue: build.query<
 			TestRecord[],
@@ -53,6 +57,36 @@ export const queueApi = api.injectEndpoints({
 				},
 			}),
 		}),
+		notifyPatient: build.mutation<void, number>({
+			query: (queueId) => ({
+				url: `test-queue/notify/${queueId}`,
+				method: 'GET',
+			}),
+		}),
+		removeFromQueue: build.mutation<
+			TestRecord[],
+			{ id: number; roomId: number }
+		>({
+			query: ({ id, roomId }) => ({
+				url: `test-queue/remove-from-queue`,
+				method: 'POST',
+				body: {
+					testRecordId: id,
+					roomId,
+				},
+			}),
+			async onQueryStarted({ roomId, ...patch }, { dispatch, queryFulfilled }) {
+				try {
+					const { data: updatedData } = await queryFulfilled
+
+					dispatch(
+						queueApi.util.updateQueryData('getQueue', { roomId }, (draft) => {
+							return updatedData
+						})
+					)
+				} catch {}
+			},
+		}),
 	}),
 })
 
@@ -62,6 +96,8 @@ export const {
 	useGetFinishedQueueQuery,
 	useConfirmFromQueueByIdMutation,
 	useUpdateFileResultMutation,
+	useNotifyPatientMutation,
+	useRemoveFromQueueMutation,
 } = queueApi
 
 export const {

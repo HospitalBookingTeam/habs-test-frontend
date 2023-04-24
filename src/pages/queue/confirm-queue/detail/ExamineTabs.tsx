@@ -129,12 +129,12 @@ const ExamineTabs = () => {
 							{data?.operationName ?? '---'}
 						</Title>
 						<Box sx={{ alignSelf: 'end' }}>
-							<Checkbox
+							{/* <Checkbox
 								checked={isResultDone}
 								onChange={(e) => setIsResultDone(e.currentTarget.checked)}
 								size="md"
 								label="Đã có kết quả xét nghiệm?"
-							/>
+							/> */}
 						</Box>
 					</Group>
 					<Divider />
@@ -142,7 +142,7 @@ const ExamineTabs = () => {
 					{!isResultDone ? (
 						<Box sx={{ alignSelf: 'center' }}>
 							<Button
-								variant="outline"
+								// variant="outline"
 								mt="sm"
 								onClick={confirmTest}
 								disabled={isHandleBeforeFileDisabled}

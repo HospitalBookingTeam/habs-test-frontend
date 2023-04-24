@@ -1,5 +1,11 @@
 import { TestRecord } from '@/entities/record'
-import { useConfirmFromQueueByIdMutation } from '@/store/queue/api'
+import { selectAuth } from '@/store/auth/selectors'
+import { useAppSelector } from '@/store/hooks'
+import {
+	useConfirmFromQueueByIdMutation,
+	useNotifyPatientMutation,
+	useRemoveFromQueueMutation,
+} from '@/store/queue/api'
 import { formatDate } from '@/utils/formats'
 import {
 	TestRecordStatus,
@@ -21,10 +27,12 @@ import {
 	LoadingOverlay,
 	Loader,
 	Stack,
+	Tooltip,
+	ActionIcon,
 } from '@mantine/core'
 import { openConfirmModal } from '@mantine/modals'
 import { showNotification } from '@mantine/notifications'
-import { IconChevronRight } from '@tabler/icons'
+import { IconBell, IconChevronRight, IconUserMinus } from '@tabler/icons'
 import { Fragment } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -42,8 +50,15 @@ const statusColors: Record<number, string> = {
 const QueueTable = ({ data, isLoading }: QueueTableProps) => {
 	const theme = useMantineTheme()
 	const navigate = useNavigate()
+	const authData = useAppSelector(selectAuth)
+
 	const [confirmQueueById, { isLoading: isLoadingConfirm }] =
 		useConfirmFromQueueByIdMutation()
+
+	const [notifyPatientMutation, { isLoading: isLoadingNotify }] =
+		useNotifyPatientMutation()
+	const [removeFromQueueMutation, { isLoading: isLoadingRemove }] =
+		useRemoveFromQueueMutation()
 
 	const openModal = (patientName: string, queueId: number) =>
 		openConfirmModal({
@@ -76,6 +91,71 @@ const QueueTable = ({ data, isLoading }: QueueTableProps) => {
 			)
 	}
 
+	const handleNotifyPatient = async (queueId: number) => {
+		await notifyPatientMutation(queueId)
+			.unwrap()
+			.then((payload) =>
+				showNotification({
+					title: 'Thông báo thành công',
+					message: 'Thông báo đã được gửi đến người bệnh',
+				})
+			)
+			.catch((error) =>
+				showNotification({
+					title: 'Lỗi thông báo',
+					message: 'Không thành công.',
+					color: 'red',
+				})
+			)
+	}
+
+	const handleRemovePatient = async (patientName: string, queueId: number) => {
+		openConfirmModal({
+			title: 'Xóa khỏi hàng chờ',
+			children: (
+				<Stack spacing={'xs'}>
+					<Text size="sm">
+						Bạn sẽ xóa người bệnh{' '}
+						<Text color="red" inherit component="span">
+							{patientName}
+						</Text>{' '}
+						khỏi hàng chờ.
+					</Text>
+					<Text size="sm">Vui lòng tiếp tục để xác nhận.</Text>
+				</Stack>
+			),
+			centered: true,
+			color: 'red',
+			labels: { confirm: 'Xác nhận', cancel: 'Hủy' },
+			confirmProps: {
+				color: 'red',
+			},
+			onConfirm: () => handleConfirmRemoveQueue(queueId),
+		})
+	}
+
+	const handleConfirmRemoveQueue = async (queueId: number) => {
+		if (!authData?.information) return
+		await removeFromQueueMutation({
+			id: queueId,
+			roomId: authData?.information?.room?.id,
+		})
+			.unwrap()
+			.then((payload) =>
+				showNotification({
+					title: 'Đã xóa khỏi hàng chờ',
+					message: '',
+				})
+			)
+			.catch((error) =>
+				showNotification({
+					title: 'Lỗi',
+					message: 'Không thành công.',
+					color: 'red',
+				})
+			)
+	}
+
 	const rows = data?.map((item, index) => {
 		const isInProgress =
 			item?.status === TestRecordStatus.DANG_TIEN_HANH ||
@@ -91,7 +171,7 @@ const QueueTable = ({ data, isLoading }: QueueTableProps) => {
 				py="sm"
 				align={'center'}
 			>
-				<Grid.Col span={2} sx={{ textAlign: 'center' }}>
+				<Grid.Col span={1} sx={{ textAlign: 'center' }}>
 					{item.numericalOrder}
 				</Grid.Col>
 				<Grid.Col span={3}>
@@ -112,8 +192,21 @@ const QueueTable = ({ data, isLoading }: QueueTableProps) => {
 					</Badge>
 				</Grid.Col>
 
-				<Grid.Col span={2}>
-					<Stack align={'end'}>
+				<Grid.Col span={3}>
+					<Group position={'right'}>
+						<Tooltip label="Xóa khỏi hàng chờ">
+							<ActionIcon
+								onClick={() => handleRemovePatient(item.patientName, item.id)}
+								color="red"
+							>
+								<IconUserMinus />
+							</ActionIcon>
+						</Tooltip>
+						<Tooltip label="Thông báo đến xét nghiệm">
+							<ActionIcon onClick={() => handleNotifyPatient(item.id)}>
+								<IconBell />
+							</ActionIcon>
+						</Tooltip>
 						<Button
 							variant={isInProgress ? 'outline' : 'filled'}
 							rightIcon={isInProgress ? <IconChevronRight /> : null}
@@ -126,11 +219,11 @@ const QueueTable = ({ data, isLoading }: QueueTableProps) => {
 								}
 								openModal(item.patientName, item.id)
 							}}
-							sx={{ width: 170 }}
+							sx={{ width: 150 }}
 						>
 							{isInProgress ? 'Tiếp tục' : 'Xét nghiệm'}
 						</Button>
-					</Stack>
+					</Group>
 				</Grid.Col>
 			</Grid>
 		)
@@ -139,8 +232,8 @@ const QueueTable = ({ data, isLoading }: QueueTableProps) => {
 	return (
 		<>
 			<Grid color="gray.1" pb="md" sx={{ width: '100%' }}>
-				<Grid.Col span={2} sx={{ textAlign: 'center' }}>
-					Số khám bệnh
+				<Grid.Col span={1} sx={{ textAlign: 'center' }}>
+					SKB
 				</Grid.Col>
 				<Grid.Col span={3}>Tên người bệnh</Grid.Col>
 				<Grid.Col span={3}>
@@ -149,7 +242,7 @@ const QueueTable = ({ data, isLoading }: QueueTableProps) => {
 				<Grid.Col span={2} sx={{ textAlign: 'center' }}>
 					Trạng thái
 				</Grid.Col>
-				<Grid.Col span={2}></Grid.Col>
+				<Grid.Col span={3}></Grid.Col>
 			</Grid>
 			<ScrollArea sx={{ height: 450 }}>
 				<Center

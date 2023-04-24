@@ -117,9 +117,9 @@ const useStyles = createStyles((theme, _params, getRef) => {
 })
 
 const data = [
-	{ link: '', label: 'Hàng chờ xét nghiệm', icon: IconList },
-	{ link: '/waiting', label: 'Hàng đợi kết quả', icon: IconPackage },
-	{ link: '/finished', label: 'Hàng đã xét nghiệm', icon: IconZoomCheck },
+	{ link: '', link2: '/', label: 'Chờ xét nghiệm', icon: IconList },
+	{ link: '/waiting', label: 'Đợi kết quả', icon: IconPackage },
+	{ link: '/finished', label: 'Đã xét nghiệm', icon: IconZoomCheck },
 ]
 
 interface NavbarLinkProps {
@@ -188,7 +188,7 @@ export function NavbarSimpleColored({ opened }: { opened: boolean }) {
 			}}
 			icon={item.icon}
 			label={item.label}
-			active={active === item.link}
+			active={active === item.link || active === item?.link2}
 		/>
 	))
 
