@@ -80,7 +80,7 @@ const QueueDetail = () => {
 				mb="sm"
 				spacing={40}
 			>
-				<BackButton />
+				<BackButton route="/waiting" />
 
 				<Badge size="xl" radius="md">
 					Xét nghiệm

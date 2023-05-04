@@ -1,35 +1,42 @@
-import { createStyles, Grid, Text } from '@mantine/core'
+import { createStyles, Grid, Text, useMantineTheme } from '@mantine/core'
 
 const useStyles = createStyles((theme) => ({
 	label: {
-		color: theme.colors.gray[6],
-		borderRight: '1px solid lightgray',
+		color: theme.colors.dark,
+		fontWeight: 500,
 	},
 }))
 
 const RowWithLabel = ({
 	label,
 	content,
-    labelSpan = 3,
+	labelSpan = 3,
+	isOdd = false,
+	fullWidth = true,
 }: {
 	label: string
 	content?: string
 	labelSpan?: number
+	isOdd?: boolean
+	fullWidth?: boolean
 }) => {
 	const { classes } = useStyles()
+	const theme = useMantineTheme()
 	return (
 		<Grid
 			sx={{
-				border: '1px solid lightgray',
+				border: '1px solid transparent',
 				borderRadius: 4,
-				width: '100%',
+				width: fullWidth ? '100%' : 'auto',
+				flex: 1,
 				margin: 0,
+				background: isOdd ? 'white' : theme.colors.gray[0],
 			}}
 		>
-			<Grid.Col span={labelSpan} p="xs" className={classes.label}>
+			<Grid.Col span={labelSpan} px="xs" className={classes.label}>
 				<Text>{label}</Text>
 			</Grid.Col>
-			<Grid.Col span={12 - labelSpan} p="xs">
+			<Grid.Col span={12 - labelSpan} px="xs">
 				<Text>{content}</Text>
 			</Grid.Col>
 		</Grid>

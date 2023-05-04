@@ -25,11 +25,13 @@ const PatientInfo = () => {
 							? formatDate(data?.patient?.dateOfBirth)
 							: '---'
 					}
+					isOdd
 				/>
 				<RowWithLabel label={'SĐT'} content={data?.patient?.phoneNumber} />
 				<RowWithLabel
 					label={'Giới tính'}
 					content={data?.patient?.gender === 0 ? 'Nam' : 'Nữ'}
+					isOdd
 				/>
 				<RowWithLabel label={'BHYT'} content={data?.patient?.bhyt} />
 			</Stack>

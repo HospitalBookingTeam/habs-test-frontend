@@ -44,7 +44,7 @@ const WaitingForResultTable = ({ data, isLoading }: QueueTableProps) => {
 				py="sm"
 				align={'center'}
 			>
-				<Grid.Col span={2} sx={{ textAlign: 'center' }}>
+				<Grid.Col span={1} sx={{ textAlign: 'center' }}>
 					{item.numericalOrder}
 				</Grid.Col>
 				<Grid.Col span={3}>
@@ -65,7 +65,7 @@ const WaitingForResultTable = ({ data, isLoading }: QueueTableProps) => {
 					</Badge>
 				</Grid.Col>
 
-				<Grid.Col span={2}>
+				<Grid.Col span={3}>
 					<Stack align={'end'}>
 						<Button
 							variant={'filled'}
@@ -74,7 +74,7 @@ const WaitingForResultTable = ({ data, isLoading }: QueueTableProps) => {
 							onClick={() => {
 								navigate(`/waiting/${item.id}`)
 							}}
-							sx={{ width: 170 }}
+							sx={{ width: 150 }}
 						>
 							{'Cập nhật'}
 						</Button>
@@ -87,8 +87,8 @@ const WaitingForResultTable = ({ data, isLoading }: QueueTableProps) => {
 	return (
 		<>
 			<Grid color="gray.1" pb="md" sx={{ width: '100%' }}>
-				<Grid.Col span={2} sx={{ textAlign: 'center' }}>
-					Số khám bệnh
+				<Grid.Col span={1} sx={{ textAlign: 'center' }}>
+					SKB
 				</Grid.Col>
 				<Grid.Col span={3}>Tên người bệnh</Grid.Col>
 				<Grid.Col span={3}>
@@ -97,7 +97,7 @@ const WaitingForResultTable = ({ data, isLoading }: QueueTableProps) => {
 				<Grid.Col span={2} sx={{ textAlign: 'center' }}>
 					Trạng thái
 				</Grid.Col>
-				<Grid.Col span={2}></Grid.Col>
+				<Grid.Col span={3}></Grid.Col>
 			</Grid>
 			<ScrollArea sx={{ height: 450 }}>
 				<Center

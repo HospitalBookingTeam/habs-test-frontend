@@ -38,13 +38,16 @@ const ExamineTabs = () => {
 		openConfirmModal({
 			title: 'Xác nhận đã xét nghiệm',
 			children: (
-				<Text size="sm">
-					Người bệnh{' '}
-					<Text color="orange" inherit component="span">
-						{data?.patientName}
-					</Text>{' '}
-					đã hoàn thành xét nghiệm. Vui lòng tiếp tục để xác nhận!
-				</Text>
+				<Stack spacing={'xs'}>
+					<Text size="sm">
+						Người bệnh{' '}
+						<Text color="green" inherit component="span">
+							{data?.patientName}
+						</Text>{' '}
+						đã hoàn thành xét nghiệm.
+					</Text>
+					<Text size="sm">Vui lòng tiếp tục để xác nhận!</Text>
+				</Stack>
 			),
 			centered: true,
 			labels: { confirm: 'Tiếp tục', cancel: 'Quay lại' },

@@ -47,11 +47,6 @@ const useStyles = createStyles((theme, _params, getRef) => {
 		},
 
 		version: {
-			backgroundColor: theme.fn.lighten(
-				theme.fn.variant({ variant: 'filled', color: theme.primaryColor })
-					.background,
-				0.1
-			),
 			color: theme.white,
 		},
 
@@ -201,7 +196,7 @@ export function NavbarSimpleColored({ opened }: { opened: boolean }) {
 	return (
 		<Navbar
 			p={matches ? 'xs' : 'md'}
-			width={{ base: 70, lg: 250 }}
+			width={{ base: 70, lg: 208 }}
 			className={classes.navbar}
 		>
 			<Navbar.Section grow>

@@ -45,7 +45,7 @@ const Queue = () => {
 	}, [value, data, isSuccess])
 
 	return (
-		<Stack p="md">
+		<Stack p="sm">
 			<Stack
 				sx={{ flexDirection: 'row' }}
 				align="center"
